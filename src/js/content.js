@@ -124,7 +124,7 @@ function selectFirstNode(selectedColor) {
     } else if (parentNode.parentNode.nodeType == 1) {
       parentNode.parentNode.focus();
     }
-    scrollToElement(searchInfo.highlightedNodes[0]);
+    //scrollToElement(searchInfo.highlightedNodes[0]);
   }
 }
 
