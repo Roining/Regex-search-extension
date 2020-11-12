@@ -196,7 +196,7 @@ function search(regexString, configurationChanged) {
           regex = new RegExp(regexString, 'i');
         }
         highlight(regex, result.highlightColor, result.selectedColor, result.textColor, result.maxResults);
-        selectFirstNode(result.selectedColor);
+      //  selectFirstNode(result.selectedColor);
         returnSearchInfo('search');
       }
     );
