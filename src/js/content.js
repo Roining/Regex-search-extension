@@ -29,7 +29,7 @@ Element.prototype.visible = function() {
 
 /*** FUNCTIONS ***/
 /* Initialize search information for this tab */
-function initSearchInfo(pattern) {
+//function initSearchInfo(pattern) {
   var pattern = typeof pattern !== 'undefined' ? pattern : '';
   searchInfo = {
     regexString : pattern,
@@ -40,7 +40,7 @@ function initSearchInfo(pattern) {
 }
 
 /* Send message with search information for this tab */
-function returnSearchInfo(cause) {
+//function returnSearchInfo(cause) {
   chrome.runtime.sendMessage({
     'message' : 'returnSearchInfo',
     'regexString' : searchInfo.regexString,
