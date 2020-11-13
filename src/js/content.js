@@ -121,6 +121,11 @@ function removeHighlight() {
   }
     while (node = document.body.querySelector(HIGHLIGHT_TAG + '.' + SELECTED_CLASS)) {
     node.outerHTML = node.innerHTML;
+    document.querySelectorAll('.highlighted_selection_scroll_marker').forEach(element => {
+      document.body.removeChild(element);
+    });
+
+    
     
   }
 };
