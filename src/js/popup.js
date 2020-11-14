@@ -234,14 +234,7 @@ document.getElementById('show-history').addEventListener('click', function() {
   setHistoryVisibility(makeVisible);
   chrome.storage.local.set({isSearchHistoryVisible: makeVisible});
 });
-document.addEventListener('selectionchange', () => {
-  if(window.getSelection().toString().length){
 
-    document.getElementById('inputRegex').value = window.getSelection().toString();
-  }
-    
-  }
-});
 document.getElementById('insensitive').addEventListener('click', function() {
   toggleCaseInsensitive();
 });
