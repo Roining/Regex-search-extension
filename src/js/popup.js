@@ -72,9 +72,7 @@ function passInputToContentScript(){
 
 function passInputToContentScript(configurationChanged){
   if (!processingKey) {
-    if (window.getSelection) {
-      document.getElementById('inputRegex').value = window.getSelection().toString();
-    }
+
     var regexString = document.getElementById('inputRegex').value;
     if  (!isValidRegex(regexString)) {
       document.getElementById('inputRegex').style.backgroundColor = ERROR_COLOR;
