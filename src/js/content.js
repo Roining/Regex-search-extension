@@ -249,6 +249,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if ('search' == request.message) {
     search(request.regexString, request.configurationChanged);
   }
+  else if('selectionchange' = request.message) {
+    
+      console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      var test = window.getSelection().toString();
+      document.getElementById('inputRegex').value = test;
+    
+   
+  }
   /* Received selectNextNode message, select next regex match */
   else if ('selectNextNode' == request.message) {
     chrome.storage.local.get({
