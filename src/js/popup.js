@@ -71,6 +71,8 @@ function passInputToContentScript(){
 }
 
 function passInputToContentScript(configurationChanged){
+  console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+
   if (!processingKey) {
     console.log("ghgjhgkjhljklljklkljljljljljljljljljljljljljljljljljlj");
     var regexString = document.getElementById('inputRegex').value;
