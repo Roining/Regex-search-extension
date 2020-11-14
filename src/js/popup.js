@@ -72,7 +72,7 @@ function passInputToContentScript(){
 
 function passInputToContentScript(configurationChanged){
   if (!processingKey) {
-
+    console.log("ghgjhgkjhljklljklkljljljljljljljljljljljljljljljljljlj");
     var regexString = document.getElementById('inputRegex').value;
     if  (!isValidRegex(regexString)) {
       document.getElementById('inputRegex').style.backgroundColor = ERROR_COLOR;
