@@ -350,6 +350,9 @@ function(tabs) {
 });
 
 /* Focus onto input form */
+if (window.getSelection) {
+  document.getElementById('inputRegex').value = window.getSelection().toString();
+}
 document.getElementById('inputRegex').focus();
 window.setTimeout(
   function(){document.getElementById('inputRegex').select();}, 0);
