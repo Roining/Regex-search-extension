@@ -72,6 +72,9 @@ function passInputToContentScript(){
 
 function passInputToContentScript(configurationChanged){
   if (!processingKey) {
+    if (window.getSelection) {
+      document.getElementById('inputRegex').value = window.getSelection().toString();
+    }
     var regexString = document.getElementById('inputRegex').value;
     if  (!isValidRegex(regexString)) {
       document.getElementById('inputRegex').style.backgroundColor = ERROR_COLOR;
@@ -312,9 +315,6 @@ chrome.storage.local.get({
     console.log(result);
 
     keepLastSearch = result.keepLastSearch;
-    if (window.getSelection) {
-      document.getElementById('inputRegex').value = window.getSelection().toString();
-    }
     if (keepLastSearch) {
       document.getElementById('inputRegex').value = result.lastSearch;
     }
@@ -353,9 +353,7 @@ function(tabs) {
 });
 
 /* Focus onto input form */
-if (window.getSelection) {
-  document.getElementById('inputRegex').value = window.getSelection().toString();
-}
+
 document.getElementById('inputRegex').focus();
 window.setTimeout(
   function(){document.getElementById('inputRegex').select();}, 0);
