@@ -76,7 +76,7 @@ function passInputToContentScript(configurationChanged){
   if (!processingKey) {
     console.log("ghgjhgkjhljklljklkljljljljljljljljljljljljljljljljljlj");
     var regexString = document.getElementById('inputRegex').value;
-    if  (!isValidRegex(regexString)) {
+    if  (!isValidRegex(regexString)) {uyu
       document.getElementById('inputRegex').style.backgroundColor = ERROR_COLOR;
     } else {
       document.getElementById('inputRegex').style.backgroundColor = WHITE_COLOR;
@@ -218,14 +218,7 @@ function clearSearchHistory() {
 /*** LISTENERS ***/
 console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 
-document.addEventListener('selectionchange', () => {
-  console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  var test = window.getSelection().toString();
 
-  document.getElementById('inputRegex').value = test;
-
-
-});
 document.getElementById('next').addEventListener('click', function() {
   selectNext();
 });
