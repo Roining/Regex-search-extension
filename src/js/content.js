@@ -249,7 +249,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if ('search' == request.message) {
     search(request.regexString, request.configurationChanged);
   }
-  else if('selectionchange' = request.message) {
+  else if('selectionchange' == request.message) {
     
       console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
       var test = window.getSelection().toString();
