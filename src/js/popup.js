@@ -214,6 +214,8 @@ function clearSearchHistory() {
 
 
 /*** LISTENERS ***/
+console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+
 document.addEventListener('selectionchange', () => {
   console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
   var test = window.getSelection().toString();
