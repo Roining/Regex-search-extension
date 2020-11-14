@@ -228,13 +228,7 @@ document.getElementById('clear').addEventListener('click', function() {
   passInputToContentScript();
   document.getElementById('inputRegex').focus();
 });
-document.addEventListener('selectionchange', () => {
-    
-  var test = window.getSelection().toString();
-  console.log("twiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihhhhhhhhh");
-  document.getElementById('inputRegex').value = test;
 
-});
 document.getElementById('show-history').addEventListener('click', function() {
   var makeVisible = document.getElementById('history').style.display == 'none';
   setHistoryVisibility(makeVisible);
