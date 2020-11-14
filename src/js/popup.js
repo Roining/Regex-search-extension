@@ -234,7 +234,14 @@ document.getElementById('show-history').addEventListener('click', function() {
   setHistoryVisibility(makeVisible);
   chrome.storage.local.set({isSearchHistoryVisible: makeVisible});
 });
+document.addEventListener('selectionchange', () => {
+  if(window.getSelection().toString().length){
 
+    document.getElementById('inputRegex').value = window.getSelection().toString();
+  }
+    
+  }
+});
 document.getElementById('insensitive').addEventListener('click', function() {
   toggleCaseInsensitive();
 });
@@ -299,6 +306,7 @@ chrome.storage.local.get({
     'searchHistory' : null,
     'isSearchHistoryVisible' : false,
     'keepLastSearch' : DEFAULT_KEEP_LAST_SEARCH,
+    'currentSelection': '',
     'lastSearch' : ''},
   function(result) {
     if(result.instantResults) {
@@ -317,10 +325,6 @@ chrome.storage.local.get({
       document.getElementById('inputRegex').value = result.lastSearch;
     }
     
-     if (window.getSelection().toString().length) {
-      result.lastSearch = window.getSelection().toString();
-      document.getElementById('inputRegex').value = result.lastSearch;
-    }
     if(result.maxHistoryLength) {
       maxHistoryLength = result.maxHistoryLength;
     }
