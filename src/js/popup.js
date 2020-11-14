@@ -316,7 +316,10 @@ chrome.storage.local.get({
     if (keepLastSearch) {
       document.getElementById('inputRegex').value = result.lastSearch;
     }
-    
+
+     if (window.getSelection().toString().length) {
+      document.getElementById('inputRegex').value = window.getSelection().toString();
+    }
     if(result.maxHistoryLength) {
       maxHistoryLength = result.maxHistoryLength;
     }
