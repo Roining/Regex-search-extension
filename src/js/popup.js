@@ -290,14 +290,7 @@ onkeydown = onkeyup = function(e) {
       }
     }
 }
-document.addEventListener('selectionchange', () => {
-  console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  var test = window.getSelection().toString();
 
-  document.getElementById('inputRegex').value = test;
-
-
-});
 /*** LISTENERS ***/
 
 /*** INIT ***/
@@ -335,6 +328,14 @@ chrome.storage.local.get({
     } else {
       searchHistory = [];
     }
+    document.addEventListener('selectionchange', () => {
+      console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+      var test = window.getSelection().toString();
+    
+      document.getElementById('inputRegex').value = test;
+    
+    
+    });
     setHistoryVisibility(result.isSearchHistoryVisible);
     updateHistoryDiv();
   }
