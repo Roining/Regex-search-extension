@@ -244,12 +244,7 @@ function search(regexString, configurationChanged) {
 
 /*** LISTENERS ***/
 /* Received search message, find regex matches */
-document.addEventListener('selectionchange', () => {
-  console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  var test = window.getSelection().toString();
-  document.getElementById('inputRegex').value = test;
 
-});
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if ('search' == request.message) {
     search(request.regexString, request.configurationChanged);
