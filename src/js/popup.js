@@ -214,12 +214,7 @@ function clearSearchHistory() {
 
 
 /*** LISTENERS ***/
-document.addEventListener('selectionchange', () => {
-  console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  var test = window.getSelection().toString();
-  document.getElementById('inputRegex').value = test;
 
-});
 document.getElementById('next').addEventListener('click', function() {
   selectNext();
 });
@@ -295,6 +290,14 @@ onkeydown = onkeyup = function(e) {
       }
     }
 }
+document.addEventListener('selectionchange', () => {
+  console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+  var test = window.getSelection().toString();
+
+  document.getElementById('inputRegex').value = test;
+
+
+});
 /*** LISTENERS ***/
 
 /*** INIT ***/
