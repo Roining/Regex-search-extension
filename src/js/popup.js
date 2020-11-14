@@ -231,6 +231,7 @@ document.getElementById('clear').addEventListener('click', function() {
 document.addEventListener('selectionchange', () => {
     
   var test = window.getSelection().toString();
+  console.log(test);
   document.getElementById('inputRegex').value = test;
 
 });
