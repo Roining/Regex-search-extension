@@ -206,6 +206,7 @@ function validateRegex(pattern) {
 
 /* Find and highlight regex matches in web page from a given regex string or pattern */
 function search(regexString, configurationChanged) {
+  console.log("twiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihhhhhhhhh");
   var regex = validateRegex(regexString);
   if (regex && regexString != '' && (configurationChanged || regexString !== searchInfo.regexString)) { // new valid regex string
     removeHighlight();
