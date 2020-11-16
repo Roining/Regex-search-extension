@@ -63,6 +63,7 @@ function isExpandable(node) {
 
 /* Highlight all text that matches regex */
 function highlight(regex, highlightColor, selectedColor, textColor, maxResults) {
+  returnSearchInfo('selectNode');
   function highlightRecursive(node) {
     if(searchInfo.length >= maxResults){
       return;
@@ -105,6 +106,7 @@ function highlight(regex, highlightColor, selectedColor, textColor, maxResults) 
           i += highlightRecursive(child);
         }
     }
+    
     return 0;
   }
   highlightRecursive(document.getElementsByTagName('body')[0]);
@@ -112,22 +114,23 @@ function highlight(regex, highlightColor, selectedColor, textColor, maxResults) 
 
 /* Remove all highlights from page */
 function removeHighlight() {
-  while (node = document.body.querySelector(HIGHLIGHT_TAG + '.' + HIGHLIGHT_CLASS)) {
+   while (node = document.body.querySelector(HIGHLIGHT_TAG + '.' + HIGHLIGHT_CLASS)) {
     node.outerHTML = node.innerHTML;
     document.querySelectorAll('.highlighted_selection_scroll_marker').forEach(element => {
+      console.log("deleteeee");
       document.body.removeChild(element);
-    });
-
+    }); 
+ 
   }
     while (node = document.body.querySelector(HIGHLIGHT_TAG + '.' + SELECTED_CLASS)) {
     node.outerHTML = node.innerHTML;
-    document.querySelectorAll('.highlighted_selection_scroll_marker').forEach(element => {
+      document.querySelectorAll('.highlighted_selection_scroll_marker').forEach(element => {
       document.body.removeChild(element);
     });
 
     
     
-  }
+  } 
 };
 
 /* Scroll page to given element */
@@ -149,9 +152,11 @@ function selectFirstNode(selectedColor) {
     } else if (parentNode.parentNode.nodeType == 1) {
       parentNode.parentNode.focus();
     }
+    returnSearchInfo('selectNode');
     //scrollToElement(searchInfo.highlightedNodes[0]);
   }
 }
+
 
 /* Helper for selecting a regex matched element */
 function selectNode(highlightedColor, selectedColor, getNext) {
@@ -249,14 +254,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if ('search' == request.message) {
     search(request.regexString, request.configurationChanged);
   }
-  else if('selectionchange' == request.message) {
-    
-      console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-      var test = window.getSelection().toString();
-      document.getElementById('inputRegex').value = test;
-    
-   
-  }
   /* Received selectNextNode message, select next regex match */
   else if ('selectNextNode' == request.message) {
     chrome.storage.local.get({
@@ -295,7 +292,20 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
   /* Received getSearchInfo message, return search information for this tab */
   else if ('getSearchInfo' == request.message) {
-    sendResponse({message: "I'm alive!"});
+    
+    
+  
+   if(window.getSelection().toString().length){
+    var query = window.getSelection().toString().trim();
+    
+    console.log(window.getSelection().toString());
+    console.log(query);
+    console.log(window.getSelection().toString().length);
+    sendResponse({message: query});
+  }
+    else{
+    sendResponse({message: ""});
+  }
     returnSearchInfo('getSearchInfo');
   }
 });

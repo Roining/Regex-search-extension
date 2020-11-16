@@ -8,9 +8,4 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     });
   }
 });
-document.addEventListener('selectionchange', () => {
-  console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-  var test = window.getSelection().toString();
-  document.getElementById('inputRegex').value = test;
 
-});
