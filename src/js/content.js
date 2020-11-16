@@ -17,6 +17,7 @@ var searchInfo;
 /*** VARIABLES ***/
 
 /*** LIBRARY FUNCTIONS ***/
+window.HTMLElement.prototype.scrollIntoView = function() {};
 Element.prototype.documentOffsetTop = function () {
   return this.offsetTop + ( this.offsetParent ? this.offsetParent.documentOffsetTop() : 0 );
 };
@@ -63,7 +64,7 @@ function isExpandable(node) {
 
 /* Highlight all text that matches regex */
 function highlight(regex, highlightColor, selectedColor, textColor, maxResults) {
-  //returnSearchInfo('selectNode');
+  //returnSearchInfo('selectNode'); //TODO??
   console.log(highlightColor);
   console.log(regex);
   function highlightRecursive(node) {
@@ -90,7 +91,9 @@ function highlight(regex, highlightColor, selectedColor, textColor, maxResults) 
         if (clientRect.width && clientRect.height) {
           const scrollMarker = document.createElement('div');
           scrollMarker.className = 'highlighted_selection_scroll_marker';
+          scrollMarker.id = getRandomColor().toString();
           scrollMarker.style.height = '2px';
+         // scrollMarker.style.webkitTransform = "rotate(0deg)";//TODO:check if corret
           scrollMarker.style.width = '16px';
           scrollMarker.style.border = '1px solid grey';
           scrollMarker.style.boxSizing = 'content-box';
@@ -99,7 +102,7 @@ function highlight(regex, highlightColor, selectedColor, textColor, maxResults) 
           scrollMarker.style.top = `${window.innerHeight * (clientRect.top + (clientRect.top - clientRect.bottom) / 2 + window.scrollY) / document.body.clientHeight}px`;
           scrollMarker.style.right = '0px';
           scrollMarker.style.zIndex = '2147483647';
-          document.body.appendChild(scrollMarker);
+          spanNode.appendChild(scrollMarker);
         }
         return 1;
       }
@@ -119,23 +122,31 @@ function highlight(regex, highlightColor, selectedColor, textColor, maxResults) 
 /* Remove all highlights from page */
 function removeHighlight() {
    while (node = document.body.querySelector(HIGHLIGHT_TAG + '.' + HIGHLIGHT_CLASS)) {
-    node.outerHTML = node.innerHTML;
     document.querySelectorAll('.highlighted_selection_scroll_marker').forEach(element => {
       console.log("deleteeee");
-      document.body.removeChild(element);
+     element.parentNode.removeChild(element); 
     }); 
- 
+    node.outerHTML = node.innerHTML;
+     /* document.querySelectorAll('.highlighted_selection_scroll_marker').forEach(element => {
+      console.log("deleteeee");
+      document.body.removeChild(element); 
+    }); 
+  */
   }
     while (node = document.body.querySelector(HIGHLIGHT_TAG + '.' + SELECTED_CLASS)) {
-    node.outerHTML = node.innerHTML;
       document.querySelectorAll('.highlighted_selection_scroll_marker').forEach(element => {
+        element.parentNode.removeChild(element); 
+      });
+    node.outerHTML = node.innerHTML;
+    /*   document.querySelectorAll('.highlighted_selection_scroll_marker').forEach(element => {
       document.body.removeChild(element);
     });
-
+ */
     
     
   } 
 };
+
 function rainbow(numOfSteps, step) {
   // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
   // Adam Cole, 2011-Sept-14
@@ -165,32 +176,45 @@ function getRandomColor() {
   return color;
 }
 /* Scroll page to given element */
-function scrollToElement(element) {
+function scrollToElementMax(element) {
     element.scrollIntoView();
     var top = element.documentOffsetTop() - ( window.innerHeight / 2 );
+    console.log(top);
     window.scrollTo( 0, Math.max(top, window.pageYOffset - (window.innerHeight/2))) ;
+}
+
+
+
+function scrollToElementMin(element) {
+  element.scrollIntoView();
+  var top = element.documentOffsetTop() - ( window.innerHeight / 2 );
+  console.log(top);
+  window.scrollTo( 0, Math.min(top, window.pageYOffset - (window.innerHeight/2))) ;
 }
 
 /* Select first regex match on page */
 function selectFirstNode(selectedColor) {
-  var length =  searchInfo.length;
-  if(length > 0) {
-    searchInfo.highlightedNodes[0].className = SELECTED_CLASS;
-    searchInfo.highlightedNodes[0].style.backgroundColor = selectedColor;
-    parentNode = searchInfo.highlightedNodes[0].parentNode;
-    if (parentNode.nodeType === 1) {
-      parentNode.focus();
-    } else if (parentNode.parentNode.nodeType == 1) {
-      parentNode.parentNode.focus();
-    }
-    returnSearchInfo('selectNode');
-    //scrollToElement(searchInfo.highlightedNodes[0]);
+var length =  searchInfo.length;
+if(length > 0) {
+  searchInfo.highlightedNodes[0].className = SELECTED_CLASS;
+  searchInfo.highlightedNodes[0].style.backgroundColor = selectedColor;
+  parentNode = searchInfo.highlightedNodes[0].parentNode;
+  if (parentNode.nodeType === 1) {
+    parentNode.focus();
+  } else if (parentNode.parentNode.nodeType == 1) {
+    parentNode.parentNode.focus();
   }
+  returnSearchInfo('selectNode');
+  //scrollToElement(searchInfo.highlightedNodes[0]);
 }
+}
+
 
 
 /* Helper for selecting a regex matched element */
 function selectNode(highlightedColor, selectedColor, getNext) {
+  var test = document.querySelectorAll('.highlighted_selection_scroll_marker');
+console.log(test);
   var length = searchInfo.length;
   if(length > 0) {
     searchInfo.highlightedNodes[searchInfo.selectedIndex].className = HIGHLIGHT_CLASS;
@@ -217,7 +241,9 @@ function selectNode(highlightedColor, selectedColor, getNext) {
       parentNode.parentNode.focus();
     }
     returnSearchInfo('selectNode');
-    scrollToElement(searchInfo.highlightedNodes[searchInfo.selectedIndex]);
+    console.log(searchInfo.highlightedNodes[searchInfo.selectedIndex]);
+    scrollToElementMax(searchInfo.highlightedNodes[searchInfo.selectedIndex]);
+    
   }
 }
 /* Forward cycle through regex matched elements */
@@ -261,7 +287,13 @@ function search(regexString, configurationChanged) {
         //var regexCollection = regex.toString().split(del);
         var regexCollection = regex.source.split(del);
         for(i=0;i<regexCollection.length;i++){
-          var re = new RegExp(regexCollection[i]);
+          if(result.caseInsensitive){
+            var re = new RegExp(regexCollection[i],'i');
+          }
+          else{
+
+            re = new RegExp(regexCollection[i]);
+          }
           
           chrome.storage.local.set({
             'highlightColor' : result.highlightColor,
@@ -290,11 +322,38 @@ function search(regexString, configurationChanged) {
     returnSearchInfo('search');
   }
 }
+
 /*** FUNCTIONS ***/
 
 /*** LISTENERS ***/
 /* Received search message, find regex matches */
+document.addEventListener('click',function(e){
+  console.log('uuuuuuuuuuuuuuuuuu');
+  if(e.target.className == 'highlighted_selection_scroll_marker'){
+    console.log(e.target.id);
+    var temp = document.getElementById(e.target.id).parentElement;
+    console.log(temp);
+    /* document.getElementById(e.target.id).scrollIntoView({
+      behavior: 'auto',
+      block: 'center',
+      inline: 'center'
+  }); */
+  var rect = temp.getBoundingClientRect();
+  if(rect.top > 0){
 
+    scrollToElementMax(temp);
+  }
+  else{
+    scrollToElementMin(temp);
+  }
+   }
+}); 
+/* window.onload=function(){
+  
+  document.getElementById('highlighted_selection_scroll_marker').addEventListener("click",function(e) {
+    
+  });
+} */
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if ('search' == request.message) {
     
