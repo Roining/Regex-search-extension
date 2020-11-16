@@ -75,7 +75,7 @@ function passInputToContentScript(configurationChanged){
 
   if (!processingKey) {
     console.log("ghgjhgkjhljklljklkljljljljljljljljljljljljljljljljljlj");
-    var delimiter = "~";
+    
     var regexString = document.getElementById('inputRegex').value;
     
     if  (!isValidRegex(regexString)) {
