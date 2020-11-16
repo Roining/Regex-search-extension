@@ -75,10 +75,10 @@ function passInputToContentScript(configurationChanged){
 
   if (!processingKey) {
     console.log("ghgjhgkjhljklljklkljljljljljljljljljljljljljljljljljlj");
-    var regexString = document.getElementById('inputRegex').value;
     var delimiter = "~";
+    var regexString = document.getElementById('inputRegex').value;
     
-    if  (!isValidRegex(regexString)) {uyu
+    if  (!isValidRegex(regexString)) {
       document.getElementById('inputRegex').style.backgroundColor = ERROR_COLOR;
     } else {
       document.getElementById('inputRegex').style.backgroundColor = WHITE_COLOR;
