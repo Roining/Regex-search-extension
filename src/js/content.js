@@ -63,12 +63,16 @@ function isExpandable(node) {
 
 /* Highlight all text that matches regex */
 function highlight(regex, highlightColor, selectedColor, textColor, maxResults) {
-  returnSearchInfo('selectNode');
+  //returnSearchInfo('selectNode');
+  console.log(highlightColor);
+  console.log(regex);
   function highlightRecursive(node) {
     if(searchInfo.length >= maxResults){
       return;
     }
     if (isTextNode(node)) {
+      
+      
       var index = node.data.search(regex);
       if (index >= 0 && node.data.length > 0) {
         var matchedText = node.data.match(regex)[0];
@@ -90,7 +94,7 @@ function highlight(regex, highlightColor, selectedColor, textColor, maxResults) 
           scrollMarker.style.width = '16px';
           scrollMarker.style.border = '1px solid grey';
           scrollMarker.style.boxSizing = 'content-box';
-          scrollMarker.style.backgroundColor = 'yellow';
+          scrollMarker.style.backgroundColor = highlightColor;
           scrollMarker.style.position = 'fixed';
           scrollMarker.style.top = `${window.innerHeight * (clientRect.top + (clientRect.top - clientRect.bottom) / 2 + window.scrollY) / document.body.clientHeight}px`;
           scrollMarker.style.right = '0px';
@@ -132,7 +136,34 @@ function removeHighlight() {
     
   } 
 };
-
+function rainbow(numOfSteps, step) {
+  // This function generates vibrant, "evenly spaced" colours (i.e. no clustering). This is ideal for creating easily distinguishable vibrant markers in Google Maps and other apps.
+  // Adam Cole, 2011-Sept-14
+  // HSV to RBG adapted from: http://mjijackson.com/2008/02/rgb-to-hsl-and-rgb-to-hsv-color-model-conversion-algorithms-in-javascript
+  var r, g, b;
+  var h = step / numOfSteps;
+  var i = ~~(h * 6);
+  var f = h * 6 - i;
+  var q = 1 - f;
+  switch(i % 6){
+      case 0: r = 1; g = f; b = 0; break;
+      case 1: r = q; g = 1; b = 0; break;
+      case 2: r = 0; g = 1; b = f; break;
+      case 3: r = 0; g = q; b = 1; break;
+      case 4: r = f; g = 0; b = 1; break;
+      case 5: r = 1; g = 0; b = q; break;
+  }
+  var c = "#" + ("00" + (~ ~(r * 255)).toString(16)).slice(-2) + ("00" + (~ ~(g * 255)).toString(16)).slice(-2) + ("00" + (~ ~(b * 255)).toString(16)).slice(-2);
+  return (c);
+}
+function getRandomColor() {
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 /* Scroll page to given element */
 function scrollToElement(element) {
     element.scrollIntoView();
@@ -226,7 +257,21 @@ function search(regexString, configurationChanged) {
         if(result.caseInsensitive){
           regex = new RegExp(regexString, 'i');
         }
-        highlight(regex, result.highlightColor, result.selectedColor, result.textColor, result.maxResults);
+        var del = '~';
+        //var regexCollection = regex.toString().split(del);
+        var regexCollection = regex.source.split(del);
+        for(i=0;i<regexCollection.length;i++){
+          var re = new RegExp(regexCollection[i]);
+          
+          chrome.storage.local.set({
+            'highlightColor' : result.highlightColor,
+            
+          });
+          
+          console.log(re);
+          console.log(regex);
+          highlight(re,  rainbow(7,i), result.selectedColor, result.textColor, result.maxResults);
+        }
       //  selectFirstNode(result.selectedColor);
         returnSearchInfo('search');
       }
@@ -252,7 +297,9 @@ function search(regexString, configurationChanged) {
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if ('search' == request.message) {
+    
     search(request.regexString, request.configurationChanged);
+        
   }
   /* Received selectNextNode message, select next regex match */
   else if ('selectNextNode' == request.message) {
@@ -298,9 +345,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
    if(window.getSelection().toString().length){
     var query = window.getSelection().toString().trim();
     
-    console.log(window.getSelection().toString());
-    console.log(query);
-    console.log(window.getSelection().toString().length);
+    
     sendResponse({message: query});
   }
     else{

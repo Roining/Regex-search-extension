@@ -86,6 +86,7 @@ function passInputToContentScript(configurationChanged){
     chrome.tabs.query(
       { 'active': true, 'currentWindow': true },
       function(tabs) {
+        console.log('aaaaaaaa');
         if ('undefined' != typeof tabs[0].id && tabs[0].id) {
           processingKey = true;
           chrome.tabs.sendMessage(tabs[0].id, {
@@ -386,7 +387,7 @@ function(tabs) {
         if(response.message != "" && document.getElementById('inputRegex').value){
          
 
-          document.getElementById('inputRegex').value += '|' + response.message; 
+          document.getElementById('inputRegex').value += '~' + response.message; 
         }
         else if(response.message != "" && !document.getElementById('inputRegex').value){
           document.getElementById('inputRegex').value += response.message; 
