@@ -17,7 +17,7 @@ var searchInfo;
 /*** VARIABLES ***/
 
 /*** LIBRARY FUNCTIONS ***/
-window.HTMLElement.prototype.scrollIntoView = function() {};
+//window.HTMLElement.prototype.scrollIntoView = function() {};
 Element.prototype.documentOffsetTop = function () {
   return this.offsetTop + ( this.offsetParent ? this.offsetParent.documentOffsetTop() : 0 );
 };
@@ -64,7 +64,7 @@ function isExpandable(node) {
 
 /* Highlight all text that matches regex */
 function highlight(regex, highlightColor, selectedColor, textColor, maxResults) {
-  //returnSearchInfo('selectNode'); //TODO??
+  returnSearchInfo('highlightselect'); //TODO??
   console.log(highlightColor);
   console.log(regex);
   function highlightRecursive(node) {
@@ -83,6 +83,7 @@ function highlight(regex, highlightColor, selectedColor, textColor, maxResults) 
         spanNode.className = HIGHLIGHT_CLASS;
         spanNode.style.backgroundColor = highlightColor;
         spanNode.style.color = textColor;
+        //spanNode.style.zIndex = '2147483647';
         spanNode.appendChild(matchedTextNode.cloneNode(true));
         matchedTextNode.parentNode.replaceChild(spanNode, matchedTextNode);
         searchInfo.highlightedNodes.push(spanNode);
@@ -179,7 +180,6 @@ function getRandomColor() {
 function scrollToElementMax(element) {
     element.scrollIntoView();
     var top = element.documentOffsetTop() - ( window.innerHeight / 2 );
-    console.log(top);
     window.scrollTo( 0, Math.max(top, window.pageYOffset - (window.innerHeight/2))) ;
 }
 
@@ -193,7 +193,8 @@ function scrollToElementMin(element) {
 }
 
 /* Select first regex match on page */
-function selectFirstNode(selectedColor) {
+function selectFirstNode(selectedColor) {  
+//returnSearchInfo('selectNode');
 var length =  searchInfo.length;
 if(length > 0) {
   searchInfo.highlightedNodes[0].className = SELECTED_CLASS;
@@ -204,11 +205,11 @@ if(length > 0) {
   } else if (parentNode.parentNode.nodeType == 1) {
     parentNode.parentNode.focus();
   }
-  returnSearchInfo('selectNode');
+
   //scrollToElement(searchInfo.highlightedNodes[0]);
 }
-}
 
+}
 
 
 /* Helper for selecting a regex matched element */
@@ -264,12 +265,13 @@ function validateRegex(pattern) {
   } catch(e) {
     return false;
   }
+  
+  /* Find and highlight regex matches in web page from a given regex string or pattern */
 }
-
-/* Find and highlight regex matches in web page from a given regex string or pattern */
 function search(regexString, configurationChanged) {
   
   var regex = validateRegex(regexString);
+  
   if (regex && regexString != '' && (configurationChanged || regexString !== searchInfo.regexString)) { // new valid regex string
     removeHighlight();
     chrome.storage.local.get({
@@ -286,7 +288,7 @@ function search(regexString, configurationChanged) {
         var del = '~';
         //var regexCollection = regex.toString().split(del);
         var regexCollection = regex.source.split(del);
-        for(i=0;i<regexCollection.length;i++){
+        for(var i=0;i<regexCollection.length;i++){
           if(result.caseInsensitive){
             var re = new RegExp(regexCollection[i],'i');
           }
@@ -304,7 +306,7 @@ function search(regexString, configurationChanged) {
           console.log(regex);
           highlight(re,  rainbow(7,i), result.selectedColor, result.textColor, result.maxResults);
         }
-      //  selectFirstNode(result.selectedColor);
+      //selectFirstNode(result.selectedColor);
         returnSearchInfo('search');
       }
     );
