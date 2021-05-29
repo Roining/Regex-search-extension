@@ -1,3 +1,13 @@
+This is a fork of https://github.com/rogershen/chrome-regex-search with the following added features:  
+1.Multiple regular expressions can be combined into one query (delimited by ~).Matches for each regular expression are highlighted by a different color.By using ~ over |, the | operator can be used within each separate regular expression in the query.  
+2.Multi-color scrollbar marks.Each match is highlighted on the scrollbar(similar to Chrome Ctrl-F scrollbar) with the same color as.Matches for each regular expression are highlighted by a different color.  
+3.To scroll to a match, click on its' scrollbar marker.Works correctly unless on hover over the marker the cursor turns into a pointer that indicates a link, in which case it will load a random link from the page.It's a known issue.  
+4.Latest regex query auto fills the search box across the tabs/sessions.When the extension is activated, latest regex query automatically fills the search box.  
+5.To search for selected text, activate the extension when the selection is active either by clicking on the icon or through the activation shortcut(it can be set at chrome://extensions/shortcuts).If the search box already contains a query, the selection will be appended with ~ delimiter and will be highlighted differently.  
+6.To cycle through the query history, press Up and Down arrows.Alternatively, it is possible to view the history of queries and click on saved queries to add them to the search box.  
+
+The original description is below.  
+
 # Chrome Regex Search
 
 <img src="https://raw.githubusercontent.com/rogershen/chrome-regex-search/master/src/icons/icons_128.png" align="right" style="padding-left: 10px;" />
