@@ -405,8 +405,8 @@ function(tabs) {
 /* Focus onto input form */
 
 document.getElementById('inputRegex').focus();
-window.setTimeout(
-  function(){document.getElementById('inputRegex').select();}, 0);
+/* window.setTimeout(
+  function(){document.getElementById('inputRegex').select();}, 0); */
 //Thanks to http://stackoverflow.com/questions/480735#comment40578284_14573552
 
 var makeVisible = document.getElementById('history').style.display == 'none';
