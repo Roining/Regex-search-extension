@@ -71,11 +71,10 @@ function passInputToContentScript(){
 }
 
 function passInputToContentScript(configurationChanged){
-  
-  
- 
+  console.log("eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
+
   if (!processingKey) {
-    
+    console.log("ghgjhgkjhljklljklkljljljljljljljljljljljljljljljljljlj");
     
     var regexString = document.getElementById('inputRegex').value;
     
@@ -84,7 +83,6 @@ function passInputToContentScript(configurationChanged){
     } else {
       document.getElementById('inputRegex').style.backgroundColor = WHITE_COLOR;
     }
-    console.log(document.getElementById('inputRegex').value);
     chrome.tabs.query(
       { 'active': true, 'currentWindow': true },
       function(tabs) {
@@ -127,8 +125,6 @@ function createHistoryLineElement(text) {
     if (document.getElementById('inputRegex').value !== text) {
       document.getElementById('inputRegex').value = text;
       passInputToContentScript();
-       /* document.getElementById("inputRegex").appendChild(
-        document.createTextNode(text));  */
       document.getElementById('inputRegex').focus();
     }
   });
@@ -238,27 +234,22 @@ var i = 0;
  document.getElementById('inputRegex').addEventListener('keydown', e=> {
   if (e.keyCode == 38) {
  
-    
+
    // var childDivs = document.querySelectorAll("history");
-   /* document.getElementById("inputRegex").appendChild(
-    document.createTextNode(i)); */
-   
+  
     document.getElementById('inputRegex').value = searchHistory[searchHistory.length-1 - ++i];
-    //console.log(document.getElementById('inputRegex').value)
-    passInputToContentScript();
-    
+    return;
   } 
   if (e.keyCode == 40 ){
     if(i<1){
       return;
     }
     document.getElementById('inputRegex').value = searchHistory[searchHistory.length-1 - --i];
-    passInputToContentScript();
-    //return;
+    return;
   }
 
 }) 
-
+//monitorEvents(document, 'keydown');
 document.getElementById('clear').addEventListener('click', function() {
   sentInput = false;
   document.getElementById('inputRegex').value = '';
@@ -294,28 +285,16 @@ document.getElementById('copy-to-clipboard').addEventListener('click', function 
 /* Received returnSearchInfo message, populate popup UI */
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if ('returnSearchInfo' == request.message) {
-    
     processingKey = false;
     if (request.numResults > 0) {
       document.getElementById('numResults').textContent = String(request.currentSelection+1) + ' of ' + String(request.numResults);
     } else {
       document.getElementById('numResults').textContent = String(request.currentSelection) + ' of ' + String(request.numResults);
+    }
+    if (request.cause == 'selectNode') {
       addToHistory(request.regexString);
     }
-    console.log('request.currentSelection')
-    if (request.cause == 'selectNode' ) {
-      addToHistory(request.regexString);
-      /* if (request.currentSelection != 0){
-
-      }
-      else{
-      
-      } */
-      
-    }
-    
     if (request.regexString !== document.getElementById('inputRegex').value) {
-      addToHistory(request.regexString);
       passInputToContentScript();
     }
   }
@@ -360,7 +339,7 @@ chrome.storage.local.get({
     } else {
       document.getElementById('inputRegex').addEventListener('change', function() {
         passInputToContentScript();
-      }); 
+      });
     }
     console.log(result);
    
