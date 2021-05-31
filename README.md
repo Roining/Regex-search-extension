@@ -10,7 +10,7 @@ This is a fork of https://github.com/rogershen/chrome-regex-search with the foll
 ## Demo  
 ![Demo](https://i.imgur.com/pyUtrLu.gif)
 
-Regex: javascript~web~\d~Java\b~sun\b~microsoft|internet explorer  
+Regex: javascript\~web~\d\~Java\b~sun\b\~microsoft|internet explorer  
 All digits and several groups of words are highlighted   
 
 ## Installation  
